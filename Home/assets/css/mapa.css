@@ -1,0 +1,69 @@
+﻿#Container {
+     display: -webkit-flex;
+	-webkit-flex-flow: row wrap;
+	-webkit-align-content: flex-start;
+}
+
+#Container .mix{
+	display: none;
+}
+
+.bordo {
+    background-color: #71001D;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.vermelho {
+    background-color: #CD0D2D;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.ouro {
+    background-color: #D1894C;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.verde {
+    background-color: #00794D;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.amarelo {
+    background-color: #FECC00;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.prata {
+    background-color: #A5ADB1;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.azul {
+    background-color: #1D26A6;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.lilas {
+    background-color: #9F75AE;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.esportivo {
+    background-color: #FF7000;
+    color: #fff;
+    padding: 10px 0;
+}
+
+.bloco {
+    background-color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+}   

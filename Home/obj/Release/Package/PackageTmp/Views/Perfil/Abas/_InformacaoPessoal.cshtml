@@ -1,0 +1,55 @@
+﻿@model Home.Models.Entity.Usuario
+@{ Layout = null;}
+
+<form role="form" action="#">
+    <div class="form-group">
+        <label class="control-label">Nome</label>
+        <input type="text" placeholder="@Model.Nome" class="form-control" data-nome @(ViewBag.IsUsuarioLogado ? string.Empty : "readonly") />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Sobrenome</label>
+        <input type="text" placeholder="@Model.Sobrenome" class="form-control" data-sobrenome @(ViewBag.IsUsuarioLogado ? string.Empty : "readonly") />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Apelido</label>
+        <input type="text" placeholder="@Model.Apelido" class="form-control" data-apelido @(ViewBag.IsUsuarioLogado ? string.Empty : "readonly") />
+    </div>
+    <div class="form-group">
+        <label class="control-label">E-mail</label>
+        <input type="text" placeholder="@Model.Email" class="form-control" data-email @(ViewBag.IsUsuarioLogado ? string.Empty : "readonly") />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Data de Nascimento</label>
+        <input type="text" placeholder="@Model.NomeDataNascimento" class="form-control date-picker" data-nascimento @(ViewBag.IsUsuarioLogado ? string.Empty : "readonly") />
+    </div>
+    @if (ViewBag.IsUsuarioLogado)
+    {
+        <div class="margiv-top-10">
+            <a href="javascript:;" onclick="editarPerfil()" class="btn green-haze">Salvar</a>
+            <a href="@Url.Action("Index", "Timeline")" class="btn default">Cancelar</a>
+        </div>
+
+        <Script>
+
+            function editarPerfil() {
+                var model = {
+                    Id: @Model.Id,
+                    Nome: $("[data-nome]:visible").val() || '@Model.Nome',
+                    Sobrenome: $("[data-sobrenome]:visible").val() || '@Model.Sobrenome',
+                    Apelido: $("[data-apelido]:visible").val() || '@Model.Apelido',
+                    Email: $("[data-email]:visible").val() || '@Model.Email',
+                    DataNascimento: $("[data-nascimento]:visible").val() || '@Model.DataNascimento'
+                }
+
+                $.post("@Url.Action("Put", "Usuario")", model)
+                    .done(function() {
+                        notify.success("Alterações realizadas com sucesso!");
+                    })
+                    .fail(function() {
+                        notify.error("Erro ao editar usuario");
+                    });
+            }
+
+        </Script>
+    }
+</form>

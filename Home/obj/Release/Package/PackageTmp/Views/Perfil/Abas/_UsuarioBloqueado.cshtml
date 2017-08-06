@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Home.Models.Entity.Usuario>
+@{ Layout = null;}
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <form action="#">
+            <div class="row">
+                <div class="col-md-6 blog-page">
+                    <div class="row">
+                        <div class="col-md-9 article-block">
+                            <div class="media">
+                                <a href="javascript:;" class="pull-left">
+                                    <img alt="" src="~/assets/img/placeholder.jpg" class="media-object">
+                                </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading font-grey-cascade">
+                                        <a href="PerfilVisualizar.html" class="font-blue-madison">@item.NomeCompleto</a>
+                                        <i class="font-grey-cascade">@item.Curso</i>
+                                    </h4>
+                                    <button type="button" class="btn btn-circle green-haze btn-sm">Desbloquear <span class="fa fa-unlock"></span></button>
+                                </div>
+                                <hr/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6 blog-page">
+            <strong>Nenhum usuário bloqueado</strong>
+        </div>
+    </div>
+}
+

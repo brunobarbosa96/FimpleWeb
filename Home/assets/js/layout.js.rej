@@ -1,0 +1,9 @@
+diff a/Web/FimpleWeb/Home/assets/js/layout.js b/Web/FimpleWeb/Home/assets/js/layout.js	(rejected hunks)
+@@ -5,6 +5,7 @@
+ 
+     var layoutImgPath = 'admin/layout/img/';
+ 
++    var layoutCssPath = 'admin/layout/css/';
+ 
+     var resBreakpointMd = Metronic.getResponsiveBreakpoint('md');
+ 

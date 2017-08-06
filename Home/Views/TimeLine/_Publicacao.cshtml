@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Home.Models.Entity.Publicacao>
+@{ Layout = null;}
+
+@if (Model != null && Model.Any())
+{
+    foreach (var publicacao in Model)
+    {
+        <div class="timeline-badge">
+            <img class="timeline-badge-userpic" src="~/assets/img/placeholder.jpg">
+        </div>
+        <div class="timeline-body">
+            <div class="timeline-body-arrow">
+            </div>
+            <div class="timeline-body-head">
+                <div class="timeline-body-head-caption">
+                    <a href="@($"Perfil/{publicacao.Usuario.Id}")" class="timeline-body-title font-blue-madison">@publicacao.Usuario.NomeCompleto</a>
+
+                    <span class="timeline-body-time font-grey-cascade">Há algum tempo</span>
+                    @if (publicacao.Usuario.Id != ViewBag.UsuarioLogado.Id)
+                    {
+                        <a href="javascript:;" onclick="abrirChat('@publicacao.Usuario.Id')" class="btn btn-xs black">
+                            <span class="md-click-circle md-click-animate" style="height: 65px; width: 65px; top: -22.5px; left: 2.07813px;"></span>
+                            <i class="fa fa-comments-o"></i>
+                        </a>
+                    }
+                </div>
+                <div class="timeline-body-head-actions">
+                    @if (publicacao.Usuario.Id == ViewBag.UsuarioLogado.Id)
+                    {
+                        <div class="btn-group">
+                            <button class="btn btn-circle green-haze btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                Ações <i class="fa fa-angle-down"></i>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li><a href="javascript:;" onclick="editarPost('@publicacao.Id', this)">Editar </a></li>
+
+                                <li class="divider">
+                                </li>
+                                <li><a href="@Url.Action("Index", "Timeline")" onclick="excluirPublicacao('@publicacao.Id')">Excluir </a></li>
+                            </ul>
+                        </div>
+                    }
+                    <div class="btn-group btn-salvar" style="display: none">
+                        <button class="btn btn-circle green-haze btn-sm" onclick="salvarEdicao('@publicacao.Id', this)" type="button" data-toggle="dropdown" data-close-others="true">
+                            Salvar <i class="fa fa-floppy-o "></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-body-content">
+                <div class="divPost" data-post="@publicacao.Id">
+                    @publicacao.Conteudo
+                </div>
+            </div>
+            <hr>
+            @Html.Partial("_Comentarios", publicacao)
+        </div>
+    }
+    <script> if ($("[data-nocontent]").length) $("[data-nocontent]").remove();</script>
+}
+else
+{
+    <div class="timeline-body" data-nocontent>
+        <div class="timeline-body-content">
+            <div class="divPost">
+                Nenhuma publicação encontrada até o momento. Aproveite e faça você o primeiro :)
+            </div>
+        </div>
+        <br>
+        <hr>
+    </div>
+}

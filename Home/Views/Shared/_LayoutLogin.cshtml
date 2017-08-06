@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>Fimple</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="~/assets/icon/favicon.ico" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.3.2/css/simple-line-icons.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css" />
+    
+    @Styles.Render("~/assets/css/externos")
+    @Styles.Render("~/assets/css")
+    @Scripts.Render("~/assets/js/jQuery")
+    @Scripts.Render("~/assets/js/externos")
+    @Scripts.Render("~/assets/js")
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.pt-BR.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <div class="page-md login">
+        <div class="logo">
+            <a href="#"><img src="~/assets/img/logo-big.png" alt=""/></a>
+        </div>
+        <div id="divContent" class="content">@RenderBody()</div>
+        <div class="copyright">2016 © Fimple.</div>
+    </div>
+</body>
+</html>

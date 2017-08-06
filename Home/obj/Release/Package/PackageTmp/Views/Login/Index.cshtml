@@ -1,0 +1,60 @@
+﻿@{ Layout = "../Shared/_LayoutLogin.cshtml"; }
+
+<div id="divErrorLogin"></div>
+<div id="divDados"></div>
+<script>
+
+    $('#register-btn').click(function () {
+        $('.login-form').slideUp(200, function () { $('.register-form').slideDown(500) });
+    });
+
+    $('#register-back-btn').click(function () {
+        $('.register-form').slideUp(200, function () { $('.login-form').slideDown(500) });
+    });
+
+    $("#inicioCurso").datepicker({
+        format: 'mm/yyyy',
+        language: 'pt-BR',
+        viewMode: 'years',
+        minViewMode: "months",
+        autoclose: true
+    });
+
+    var url = {
+        Login: '@Url.Action("GetDados", "Login")',
+        Usuario: '@Url.Action("GetDados", "Usuario")'
+    }
+
+    var getLogin = (function login() {
+        $.get(url.Login)
+            .success(setData)
+            .error(setErrorLogin);
+        return login;
+    })();
+
+    var getUsuario = function () {
+        $.get(url.Usuario)
+            .success(setData)
+            .error(setErrorLogin);
+    }
+
+    function setData(data) {
+        Metronic.init();
+        Layout.init();
+
+        paceOptions = {
+            elements: false,
+            restartOnPushState: false,
+            restartOnRequestAfter: false
+        }
+
+        $("#divDados").slideUp(200, function () {
+            $("#divDados").html(data).slideDown(300);
+        });
+    }
+
+    function setErrorLogin(xhr) {
+        notify.error(xhr.responseText);
+    }
+
+</script>

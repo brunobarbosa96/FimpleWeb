@@ -1,0 +1,115 @@
+﻿@model Home.Models.Entity.Usuario
+@{ Layout = null; }
+
+@using (Ajax.BeginForm("Post", "Usuario", null, new AjaxOptions
+{
+    OnSuccess = "setData(data)",
+    OnFailure = "setErrorLogin(xhr)"
+}, new { id = "formUsuario" }))
+{
+    <h3>Cadastrar</h3>
+    <div>@Html.ValidationSummary()</div>
+    <p class="hint">
+        Insira suas informações pessoais abaixo:
+    </p>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Nome</label>
+        <input id="Nome" name="Nome" class="form-control placeholder-no-fix" type="text" placeholder="Nome" />
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Sobrenome</label>
+        <input id="Sobrenome" name="Sobrenome" class="form-control placeholder-no-fix" type="text" placeholder="Sobrenome" />
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Data de nascimento</label>
+        <input id="DataNascimento" name="DataNascimento" class="form-control placeholder-no-fix date-picker" type="text" placeholder="Data de nascimento" />
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Email</label>
+        <input id="Email" name="Email" class="form-control placeholder-no-fix" type="text" placeholder="Email" />
+    </div>
+    <p class="hint">
+        Insira informações sobre o seu curso abaixo:
+    </p>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Rgm</label>
+        <input id="Rgm" name="Rgm" class="form-control placeholder-no-fix" type="text" placeholder="Rgm" />
+    </div>
+    <div class="form-group">
+        <select class="form-control" name="Curso.Id">
+            <option>Curso</option>
+            @if (Model?.ComboCurso != null && Model.ComboCurso.Any())
+            {
+                foreach (var curso in Model.ComboCurso)
+                {
+                    <option value="@curso.Id">@curso.Nome</option>
+
+                }
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Data de inicio do curso</label>
+        <input id="DataInicioCurso" name="DataInicioCurso" class="form-control placeholder-no-fix" type="text" placeholder="Data de inicio do curso" />
+    </div>
+    <p class="hint">
+        Insira os detalhes da conta abaixo:
+    </p>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Apelido (Opcional)</label>
+        <input id="Apelido" name="Apelido" class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Apelido (Opcional)" />
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Senha</label>
+        <input id="Senha" name="Senha" class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Senha" />
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Insira novamente a senha</label>
+        <input id="NovaSenha" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Insira novamente a senha" />
+    </div>
+    <div class="form-actions">
+        <button type="button" id="btnVoltar" class="btn btn-default">Voltar</button>
+        <button type="submit" id="btnCadastrar" class="btn btn-success uppercase pull-right">Cadastrar</button>
+    </div>
+}
+
+<script>
+
+            $(document).ready(function () {
+                Metronic.init(); // init metronic core components
+                Layout.init(); // init current layout
+
+                paceOptions = {
+                    elements: false,
+                    restartOnPushState: false,
+                    restartOnRequestAfter: false
+                }
+
+                $(".date-picker")
+                       .datepicker({
+                           format: 'dd/mm/yyyy',
+                           language: 'pt-BR',
+                           autoclose: true
+                       });
+                $("#DataInicioCurso")
+                    .datepicker({
+                        format: 'mm/yyyy',
+                        language: 'pt-BR',
+                        viewMode: 'years',
+                        minViewMode: "months",
+                        autoclose: true
+                    });
+            });
+
+</script>
+
+<script>
+
+    $("#btnCadastrar").click(function () {
+        if ($("#Senha").val() != $("#NovaSenha").val())
+            return false;
+    });
+
+    $("#btnVoltar").click(getLogin);
+
+</script>

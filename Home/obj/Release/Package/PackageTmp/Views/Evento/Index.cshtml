@@ -1,0 +1,178 @@
+﻿@model Home.Models.Entity.Usuario
+<!-- BEGIN PAGE HEADER-->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-users"></i>
+            <a href="@Url.Action("Index", "Evento")">Eventos</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" onclick="modalEvento()">
+                Novo Evento
+            </button>
+        </div>
+    </div>
+</div>
+<!-- BEGIN PAGE CONTENT-->
+<div class="timeline">
+    <div class="timeline-item" id="divPublicacoes"></div>
+</div>
+<!-- END PAGE CONTENT-->
+<div>@Html.Partial("Modal/_ModalAddEvento")</div>
+<script>
+    $("#MenuLateral li.start.active.open").removeClass("start active open");
+    $("#liEventos").addClass("start active open");
+    $("#liEventos").find("span:not(:first)").addClass("selected");
+    $(".date-picker").datepicker({
+        format: 'dd/mm/yyyy',
+        language: 'pt-BR',
+        autoclose: true
+    });
+
+    $("#novoPost").summernote({
+        toolbar: false,
+        height: 200,
+        minHeight: 200,
+        maxHeight: 500
+    });
+
+    function modalEvento() {
+        $("#modalAddEvento").modal("show");
+        //$("#novoPost").summernote("focus");
+    }
+
+    function editarPost(id, element) {
+        $("[data-post=" + id + "]").summernote({
+            toolbar: false,
+            height: 200,
+            minHeight: 200,
+            maxHeight: 500
+        });
+        $(element).closest(".timeline-body-head-actions").find(".btn-salvar").show();
+    }
+
+    function addComentario(obj) {
+        $(obj).closest("[data-add-coment]").hide().next("[data-salvar-coment]").show();
+        $(obj).closest(".col-md-12.blog-page").find("[data-row-coment]").show();
+    }
+
+</script>
+<script>
+
+    var buscarEventos = (function evento(callback, isUpdate) {
+        $.get('@Url.Action("GetAll", "Evento")', {
+            pagina: Math.ceil($(".timeline-body").length / 30)
+        })
+        .done((data) => {
+            isUpdate
+            ? $("#divPublicacoes").prepend(data)
+            : $("#divPublicacoes").html(data);
+
+            if (typeof callback == "function")
+                callback();
+        })
+        .fail((xhr) => {
+            notify.error("Erro ao buscar eventos");
+        });
+
+        return evento;
+    })();
+
+    function addEvento() {
+        $.post('@Url.Action("Post", "Evento")',
+            {
+                Titulo: $("#TituloAdd").val(),
+                Conteudo: $(".panel-body").text(),
+                Local: $("#LocalAdd").val(),
+                Data: $("#QuandoAdd").val(),
+                Usuario: { Id: '@Model.Id' },
+                Entidade: { Id: 1 },
+                Categoria: { Id: 0 },
+                Curso: { Id: 0 }
+            }).done(() => {
+                $("#modalAddEvento").modal("hide");
+                $("#modalAdd")[0].reset();
+                $('#DescricaoAdd').summernote('code', '');
+                buscarEventos();
+            }).fail(() => {
+                notify.error("Erro ao salvar evento");
+            });
+    }
+
+    function salvarEdicao(id, obj) {
+        $.post('@Url.Action("Put", "Evento")',
+           {
+               Id: id,
+               Titulo: "Título padrão",
+               Conteudo: $("[data-post=" + id + "]").closest(".timeline-body-content").find(".note-editable.panel-body:first").text().trim(),
+               Data: new Date(),
+               Usuario: { Id: '@Model.Id' },
+               Entidade: { Id: 1 },
+               Categoria: { Id: 0 },
+               Curso: { Id: 0 }
+           })
+           .done(() => {
+               $(".note-editable.panel-body").text("");
+               $('.divPost').summernote("destroy");
+               buscarEventos(() => {
+                   $(obj).closest(".timeline-badge").remove();
+                   $(obj).closest(".timeline-body").remove();
+               });
+           })
+           .fail(() => {
+               notify.error("Erro ao salvar publicação");
+           });
+    }
+
+    function excluirPublicacao(id) {
+        $.get('@Url.Action("Delete", "Evento")',
+            {
+                id: id
+            })
+            .fail(() => {
+                notify.error("Erro ao excluir publicação");
+            });
+    }
+
+    function salvarComentario(obj) {
+        $.post('@Url.Action("PostComentario", "Evento")',
+            {
+                Publicacao: { Id: $(obj).closest("[data-id-publicacao]").attr("data-id-publicacao") },
+                Conteudo: $(obj).closest(".col-md-12.blog-page").find(".note-editable p").text(),
+                Usuario: { Id: '@Model.Id' }
+            })
+            .done(() => {
+                $("#novaPostagem").hide();
+                $("textarea.note-codable").val("");
+                $('.divPost').summernote("destroy");
+                buscarEventos();
+            })
+            .fail(() => {
+                notify.error("Erro ao salvar comentário");
+            })
+            .complete(() => {
+                $(obj).closest("[data-add-coment]").show().next("[data-salvar-coment]").hide();
+                $(obj).closest(".col-md-12 blog-page").find("[data-div-coment]").summernote("destroy");
+            });
+    }
+
+    function excluirComentario(id) {
+        $.get('@Url.Action("DeleteComentario", "Evento")',
+            {
+                id: id
+            })
+            .fail(() => {
+                notify.error("Erro ao excluir comentário");
+            });
+    }
+
+    function abrirchat(idUsuario) {
+        $('body').toggleClass('page-quick-sidebar-open');
+        $(".media[data-user-id=" + idUsuario + "]").trigger("click");
+    }
+
+</script>

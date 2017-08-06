@@ -1,0 +1,203 @@
+﻿@model Home.Models.Entity.Usuario
+<!-- BEGIN PAGE HEADER-->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="@Url.Action("Index", "Timeline")">Timeline</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">  
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true" onclick="addPost()">
+                Nova Postagem
+            </button>
+        </div>
+    </div>
+</div>
+<!-- BEGIN PAGE CONTENT-->
+<div class="timeline">
+    <!-- TIMELINE ITEM -->
+    <!-- BEGIN NOVA POSTAGEM -->
+    <div class="timeline-item" id="novaPostagem" style="display: none">
+        <div class="timeline-badge">
+            <img class="timeline-badge-userpic" src="~/assets/img/placeholder.jpg">
+        </div>
+        <div class="timeline-body">
+            <div class="timeline-body-arrow">
+            </div>
+            <div class="timeline-body-head">
+                <div class="timeline-body-head-caption">
+                    <a href="javascript:;" class="timeline-body-title font-blue-madison">@Model.NomeCompleto</a>
+                </div>
+                <div class="timeline-body-head-actions">
+                    <div class="btn-group btn-salvar">
+                        <button class="btn btn-circle green-haze btn-sm" id="btnSalvarPublicacao" type="button" data-toggle="dropdown" data-close-others="true">
+                            Salvar <i class="fa fa-floppy-o "></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-body-content">
+                <div id="novoPost">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END NOVA POSTAGEM -->
+    <!-- BEGIN PUBLICAÇÕES -->
+    <div class="timeline-item" id="divPublicacoes"></div>
+    <!-- END PUBLICAÇÕES -->
+    <!-- END TIMELINE ITEM -->
+</div>
+<!-- END PAGE CONTENT-->
+
+<script>
+
+    //bootbox.setLocale("br");
+    $("#novoPost").summernote({
+        toolbar: false,
+        height: 200,
+        minHeight: 200,
+        maxHeight: 500
+    });
+
+   function addPost() {
+        $("#novaPostagem").show();
+        $("#novoPost").summernote("focus");
+    }
+
+    function editarPost(id, element) {
+        $("[data-post="+ id + "]").summernote({
+            toolbar: false,
+            height: 200,
+            minHeight: 200,
+            maxHeight: 500
+        });
+        $(element).closest(".timeline-body-head-actions").find(".btn-salvar").show();
+    }
+
+    function addComentario(obj) {
+        $(obj).closest("[data-add-coment]").hide().next("[data-salvar-coment]").show();
+        $(obj).closest(".col-md-12.blog-page").find("[data-row-coment]").show();
+    }
+
+</script>
+<script>
+
+    var buscarPublicacoes = (function publicacao(callback, isUpdate) {
+        $.get('@Url.Action("GetAll", "Timeline")', {
+            pagina: Math.ceil($(".timeline-body").length / 30)
+        })
+        .done((data) => {
+            isUpdate
+            ? $("#divPublicacoes").prepend(data)
+            : $("#divPublicacoes").html(data);
+
+            if (typeof callback == "function")
+                callback();
+        })
+        .fail((xhr) => {
+            notify.error("Erro ao buscar publicações");
+        });
+
+        return publicacao;
+    })();
+
+    $("#btnSalvarPublicacao").click(() => {
+        $.post('@Url.Action("Post", "Timeline")',
+            {
+                Titulo: "Título padrão",
+                Conteudo: $(".note-editable.panel-body:first").text().trim(),
+                Data: new Date(),
+                Usuario: { Id: '@Model.Id' },
+                Entidade: { Id: 1 },
+                Categoria: { Id: 0 },
+                Curso: { Id: 0 }
+            })
+            .done(() => {
+                $("#novaPostagem").hide();
+                $(".note-editable.panel-body").text("");
+                $('.divPost').summernote("destroy");
+                buscarPublicacoes();
+            })
+            .fail(() => {
+                notify.error("Erro ao salvar publicação");
+            });
+    });
+
+    function salvarEdicao(id, obj) {
+        $.post('@Url.Action("Put", "Timeline")',
+           {
+               Id: id,
+               Titulo: "Título padrão",
+               Conteudo: $("[data-post=" + id + "]").closest(".timeline-body-content").find(".note-editable.panel-body:first").text().trim(),
+               Data: new Date(),
+               Usuario: { Id: '@Model.Id' },
+               Entidade: { Id: 1 },
+               Categoria: { Id: 0 },
+               Curso: { Id: 0 }
+           })
+           .done(() => {
+               $(".note-editable.panel-body").text("");
+               $('.divPost').summernote("destroy");
+               buscarPublicacoes(() => {
+                   $(obj).closest(".timeline-badge").remove();
+                   $(obj).closest(".timeline-body").remove();
+               });
+           })
+           .fail(() => {
+                notify.error("Erro ao salvar publicação");
+           });
+    }
+
+    function excluirPublicacao(id) {
+        $.get('@Url.Action("Delete", "Timeline")',
+            {
+                id: id
+            })
+            .fail(() => {
+                notify.error("Erro ao excluir publicação");
+            });
+    }
+
+    function salvarComentario(obj) {
+        $.post('@Url.Action("PostComentario", "Timeline")',
+            {
+                Publicacao: { Id: $(obj).closest("[data-id-publicacao]").attr("data-id-publicacao") },
+                Conteudo: $(obj).closest(".col-md-12.blog-page").find(".note-editable p").text(),
+                Usuario: { Id: '@Model.Id' }
+            })
+            .done(() => {
+                $("#novaPostagem").hide();
+                $("textarea.note-codable").val("");
+                $('.divPost').summernote("destroy");
+                buscarPublicacoes();
+            })
+            .fail(() => {
+                notify.error("Erro ao salvar comentário");
+            })
+            .complete(() => {
+                $(obj).closest("[data-add-coment]").show().next("[data-salvar-coment]").hide();
+                $(obj).closest(".col-md-12 blog-page").find("[data-div-coment]").summernote("destroy");
+            });
+    }
+
+    function excluirComentario(id) {
+        $.get('@Url.Action("DeleteComentario", "Timeline")',
+            {
+                id: id
+            })
+            .fail(() => {
+                notify.error("Erro ao excluir comentário");
+            });
+    }
+
+    function abrirChat(idUsuario) {
+        $('body').toggleClass('page-quick-sidebar-open');
+        $(".media[data-user-id=" + idUsuario + "]").trigger("click");
+    }
+
+</script>

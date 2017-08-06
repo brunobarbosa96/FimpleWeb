@@ -1,0 +1,421 @@
+﻿<link href="~/assets/css/mapa.css" rel="stylesheet" type="text/css" />
+<!-- BEGIN PAGE HEADER-->
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-map"></i>
+            <a href="#">Mapa</a>
+        </li>
+    </ul>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row margin-top-20">
+    <div>
+        <div class="input-icon col-md-12">
+            <i class="icon-magnifier"></i>
+            <input type="text" class="form-control " placeholder="buscar..." onkeydown="filter($(this).val())" />
+        </div>
+        <div class="col-md-12" id="Container">
+            <div class="col-md-6 panel-body bloco mix" data-nome="ADMINISTRAÇÃO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ADMINISTRAÇÃO</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="JORNALISMO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">JORNALISMO</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ARTES VISUAIS">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ARTES VISUAIS</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="LETRAS - PORTUGUÊS E LITERATURAS">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">LETRAS - PORTUGUÊS E LITERATURAS</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="BIOMEDICINA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">BIOMEDICINA</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="CIÊNCIA DA COMPUTAÇÃO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">CIÊNCIA DA COMPUTAÇÃO</label>
+                </div>
+                <div class="col-md-6 text-center amarelo">
+                    <label class="control-label">AMARELO</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="CIÊNCIAS BIOLÓGICAS">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">CIÊNCIAS BIOLÓGICAS</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="CIÊNCIAS CONTÁBEIS">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">CIÊNCIAS CONTÁBEIS</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="DESIGN EM MODA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">DESIGN EM MODA</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="DESIGN DE PRODUTO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">DESIGN DE PRODUTO</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="DESIGN GRÁFICO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">DESIGN GRÁFICO</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="DIREITO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">DIREITO</label>
+                </div>
+                <div class="col-md-6 text-center azul">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="EDUCAÇÃO FÍSICA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">EDUCAÇÃO FÍSICA</label>
+                </div>
+                <div class="col-md-6 text-center esportivo">
+                    <label class="control-label">CENTRO ESPORTIVO</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ENFERMAGEM">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ENFERMAGEM</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ENGENHARIA CIVIL">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ENGENHARIA CIVIL</label>
+                </div>
+                <div class="col-md-6 text-center ouro">
+                    <label class="control-label">OURO</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ENGENHARIA DE PRODUÇÃO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ENGENHARIA DE PRODUÇÃO</label>
+                </div>
+                <div class="col-md-6 text-center ouro">
+                    <label class="control-label">OURO</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ENGENHARIA ELÉTRICA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ENGENHARIA ELÉTRICA</label>
+                </div>
+                <div class="col-md-6 text-center ouro">
+                    <label class="control-label">OURO</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ENGENHARIA MECÂNICA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ENGENHARIA MECÂNICA</label>
+                </div>
+                <div class="col-md-6 text-center lilas">
+                    <label class="control-label">LILÁS</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ENGENHARIA MECATRÔNICA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ENGENHARIA MECATRÔNICA</label>
+                </div>
+                <div class="col-md-6 text-center vermelho">
+                    <label class="control-label">VERMELHO</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="ENGENHARIA QUÍMICA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">ENGENHARIA QUÍMICA</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="FARMÁCIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">FARMÁCIA</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="FÍSICA - LICENCIATURA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">FÍSICA - LICENCIATURA</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="FISIOTERAPIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">FISIOTERAPIA</label>
+                </div>
+                <div class="col-md-6 text-center azul">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="FONOAUDIOLOGIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">FONOAUDIOLOGIA</label>
+                </div>
+                <div class="col-md-6 text-center azul">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="GEOGRAFIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">GEOGRAFIA</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="HISTÓRIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">HISTÓRIA</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="JORNALISMO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">JORNALISMO</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="LETRAS">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">LETRAS</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="MATEMÁTICA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">MATEMÁTICA</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="NUTRIÇÃO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">NUTRIÇÃO</label>
+                </div>
+                <div class="col-md-6 text-center azul">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="PEDAGOGIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">PEDAGOGIA</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="PSICOLOGIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">PSICOLOGIA</label>
+                </div>
+                <div class="col-md-6 text-center azul">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="PUBLICIDADE E PROPAGANDA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">PUBLICIDADE E PROPAGANDA</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="QUÍMICA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">QUÍMICA</label>
+                </div>
+                <div class="col-md-6 text-center lilas">
+                    <label class="control-label">LILÁS</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="SERVIÇO SOCIAL">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">SERVIÇO SOCIAL</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="SISTEMAS DE INFORMAÇÃO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">SISTEMAS DE INFORMAÇÃO</label>
+                </div>
+                <div class="col-md-6 text-center amarelo">
+                    <label class="control-label">AMARELO</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM AGRONEGÓCIOS">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM AGRONEGÓCIOS</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM DESIGN GRÁFICO">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM DESIGN GRÁFICO</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM DESIGN DE MODA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM DESIGN DE MODA</label>
+                </div>
+                <div class="col-md-6 text-center verde">
+                    <label class="control-label">VERDE</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM COMÉRCIO EXTERIOR">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM COMÉRCIO EXTERIOR</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM GESTÃO FINANCEIRA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM GESTÃO FINANCEIRA</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM MARKETING">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM MARKETING</label>
+                </div>
+                <div class="col-md-6 text-center prata">
+                    <label class="control-label">PRATA</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM RADIOLOGIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM RADIOLOGIA</label>
+                </div>
+                <div class="col-md-6 text-center bordo">
+                    <label class="control-label">BORDÔ</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM GASTRONOMIA">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM GASTRONOMIA</label>
+                </div>
+                <div class="col-md-6 text-center azul">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+            <div class="col-md-6 panel-body bloco mix" data-nome="TEC. EM GESTÃO AMBIENTAL">
+                <div class="col-md-6 text-center" style="padding: 10px 0">
+                    <label class="control-label">TEC. EM GESTÃO AMBIENTAL</label>
+                </div>
+                <div class="col-md-6 text-center azul">
+                    <label class="control-label">AZUL</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+<script>
+    $("#MenuLateral li.start.active.open").removeClass("start active open");
+    $("#liMapa").addClass("start active open");
+    $("#liMapa").find("span:not(:first)").addClass("selected");
+
+    var mixCompleto = true;
+    $(document).ready(function () {
+        $('#Container').mixItUp({
+            animation: {
+                effects: 'fade scale stagger',
+                duration: 150,
+                easing: 'ease',
+                queue: false,
+                queueLimit: 1,
+                animateChangeLayout: true,
+                animateResizeContainer: false,
+                animateResizeTargets: true,
+                reverseOut: true
+            },
+            load: {
+                sort: '.mix[data-nome]'
+            },
+            callbacks: {
+                onMixStart: mixCompleto = false,
+                onMixEnd: mixCompleto = true
+            }
+        });
+
+    });
+
+    function filter(nome) {
+        if (!nome || !nome.length)
+            $('#Container').mixItUp('filter', 'all');
+        else
+            $('#Container').mixItUp('filter', '.mix[data-nome*=' + nome.toUpperCase() + ']');
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/2.1.11/jquery.mixitup.js"></script>

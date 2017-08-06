@@ -1,0 +1,61 @@
+﻿@{ Layout = null; }
+
+@using (Ajax.BeginForm("Entrar", "Login", null, new AjaxOptions
+{
+    OnSuccess = "setData(data)",
+    OnFailure = "setErrorLogin(xhr)"
+}, new { id = "formLogin"}))
+{
+    <h3 class="form-title">Entrar</h3>
+    <div class="alert alert-danger display-hide">
+        <button class="close" data-close="alert"></button>
+        <span>Insira seu usuario e senha.</span>
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Email ou Rgm</label>
+        <input name="Email" id="Email" class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Email ou Rgm"/>
+    </div>
+    <div class="form-group">
+        <label class="control-label visible-ie8 visible-ie9">Senha</label>
+        <input name="Senha" id="Senha" class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Senha"/>
+    </div>
+    <div class="form-actions">
+        <button type="submit" id="btnEntrar" class="btn btn-success uppercase">Entrar</button>
+        <label class="rememberme check pull-right">
+            <input type="checkbox" name="Lembrar" value="1" />Lembrar
+        </label>
+    </div>
+    <div class="create-account" id="criarConta">
+        <p><a href="javascript:void(0)" class="uppercase">CRIAR UMA CONTA</a></p>
+    </div>
+}
+
+<script>
+    $("#criarConta").click(getUsuario);
+
+    $("#btnEntrar").click(function () {
+        if (!$("#Email").val() || !$("#Senha").val())
+            return false;
+
+        $.post('@Url.Action("Entrar")', {
+            Email: $("#Email").val(),
+            Senha: $("#Senha").val()
+        }).done((data) => {
+            $("#formLogin").submit();
+            return false;
+        }).fail((xhr) => {
+            $("#formLogin")[0].reset();
+            setErrorLogin(xhr);
+        });
+        return false;
+    });
+
+    function formLoginSuccess(data) {
+        $("#divContent").html(data);
+    }
+
+    function formLoginFailure(xhr) {
+        notify.error(xhr.responseText);
+    }
+
+</script>

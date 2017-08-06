@@ -1,0 +1,299 @@
+﻿@model Home.Models.Dto.ChatDto
+@{ Layout = null; }
+<input type="hidden" id="nomeUsuario" value="@Model.Usuario.Nome" />
+<div class="page-quick-sidebar-wrapper">
+    <div class="page-quick-sidebar">
+        <div class="nav-justified">
+            <ul class="nav nav-tabs nav-justified">
+                <li class="active">
+                    <a href="#quick_sidebar_tab_1" data-toggle="tab">Chat</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
+                    <div class="page-quick-sidebar-chat-users" data-rail-color="#ddd" data-wrapper-class="page-quick-sidebar-list">
+                        <ul class="media-list list-items">
+                            @if (Model.Usuarios != null && Model.Usuarios.Any())
+                            {
+                                foreach (var usuario in Model.Usuarios)
+                                {
+                                    <li class="media" data-user-id="@usuario.UsuarioDestino.Id" onclick="openChat(this)">
+                                        <div class="media-status">
+                                            @*<span class="badge badge-success">1</span>*@
+                                        </div>
+                                        <img class="media-object" src="~/assets/img/placeholder.jpg" alt="...">
+                                        <div class="media-body">
+                                            <h4 class="media-heading">@usuario.UsuarioDestino.Nome</h4>
+                                            <div class="media-heading-sub">@usuario.UsuarioDestino.Curso.Nome</div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="page-quick-sidebar-item">
+                        @if (Model.Usuarios != null && Model.Usuarios.Any())
+                        {
+                            foreach (var usuario in Model.Usuarios)
+                            {
+                                <div class="page-quick-sidebar-chat-user" data-pagina="0" data-user-id="@usuario.UsuarioDestino.Id" style="display: none">
+                                    <div class="page-quick-sidebar-nav">
+                                        <a href="javascript:;" class="page-quick-sidebar-back-to-list" onclick="hideChat(this)"><i class="icon-arrow-left"></i>Voltar</a>
+                                    </div>
+                                    <div class="page-quick-sidebar-chat-user-messages"></div>
+                                </div>
+                                <div class="page-quick-sidebar-chat-user-form" data-user-id="@usuario.UsuarioDestino.Id" style="display: none">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Digite uma mensagem">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn blue"><i class="icon-check"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divContainerMessage">
+    <div class="page-quick-sidebar-chat-user" data-user-id style="display: none">
+        <div class="page-quick-sidebar-nav">
+            <a href="javascript:;" class="page-quick-sidebar-back-to-list" onclick="hideChat(this)"><i class="icon-arrow-left"></i>Voltar</a>
+        </div>
+        <div class="page-quick-sidebar-chat-user-messages"></div>
+    </div>
+    <div class="page-quick-sidebar-chat-user-form" data-user-id style="display: none">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Digite uma mensagem">
+            <div class="input-group-btn">
+                <button type="button" class="btn blue"><i class="icon-check"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/assets/js/SignalR")
+<script src="/signalr/hubs" type="text/javascript"></script>
+
+<script>
+
+    var usuarioLogado = {
+        Id: '@Model.Usuario.Id',
+        Nome: '@Model.Usuario.Nome',
+        Curso: {
+            Id: '@Model.Usuario.Curso.Id',
+            Nome: '@Model.Usuario.Curso.Nome'
+        }
+    }
+
+    var url = {
+        BuscarMensagens: '@Url.Action("BuscarMensagens", "Chat")'
+    }
+
+    var setaNumeroConversas = (function conversa() {
+        $("li a span.badge.badge-default").text($(".media[data-user-id]").length);
+        return conversa;
+    })();
+
+    var wrapper = $('.page-quick-sidebar-wrapper');
+    var wrapperChat = wrapper.find('.page-quick-sidebar-chat');
+
+    var initChatSlimScroll = function () {
+        var chatUsers = wrapper.find('.page-quick-sidebar-chat-users');
+        var chatUsersHeight = wrapper.height() - wrapper.find('.nav-justified > .nav-tabs').outerHeight();
+
+        // chat user list
+        Metronic.destroySlimScroll(chatUsers);
+        chatUsers.attr("data-height", chatUsersHeight);
+        Metronic.initSlimScroll(chatUsers);
+
+        var chatMessages = wrapperChat.find('.page-quick-sidebar-chat-user-messages:visible');
+        var chatMessagesHeight = chatUsersHeight -
+            wrapperChat.find('.page-quick-sidebar-chat-user-form:visible').outerHeight() -
+            wrapperChat.find('.page-quick-sidebar-nav:visible').outerHeight();
+
+        // user chat messages
+        Metronic.destroySlimScroll(chatMessages);
+        chatMessages.attr("data-height", chatMessagesHeight);
+        Metronic.initSlimScroll(chatMessages);
+    };
+    Metronic.addResizeHandler(initChatSlimScroll); // reinitialize on window resize
+    initChatSlimScroll();
+    // Definindo template para adicionar novo usuário ao chat
+    var montaChatUsuario = (usuario) => {
+        var newUser = '';
+        newUser += '<li class="media" data-pagina="0" data-user-id=' + usuario.Id + ' onclick="openChat(this)">';
+        newUser += '<div class="media-status">';
+        //newUser += '<span class="badge badge-success"></span>';
+        newUser += '</div>';
+        newUser += '<img class="media-object" src="/assets/img/placeholder.jpg" alt="...">';
+        newUser += '<div class="media-body">';
+        newUser += '<h4 class="media-heading">' + usuario.Nome + '</h4>';
+        newUser += '<div class="media-heading-sub">' + usuario.Curso.Nome + '</div>';
+        newUser += '</div>';
+        newUser += '</li>';
+
+        $(".page-quick-sidebar-item").append(montaChatMensagens(usuario));
+        initChatSlimScroll();
+        setaNumeroConversas();
+        return newUser;
+    }
+
+    // Template adicionado para cada usuário criado no chat referente as mensagens
+    var montaChatMensagens = (usuario) => {
+        return $("#divContainerMessage .page-quick-sidebar-chat-user, #divContainerMessage .page-quick-sidebar-chat-user-form").clone().attr("data-user-id", usuario.Id);
+    }
+
+    var preparePost = function (dir, time, name, avatar, message, id) {
+        var tpl = '';
+        tpl += '<div class="post ' + dir + '">';
+        tpl += '<img class="avatar" alt="" src="' + /*Layout.getLayoutImgPath()*/"/assets/img/placeholder.jpg" /*+ avatar + '.jpg*/ + '"/>';
+        tpl += '<div class="message">';
+        tpl += '<span class="arrow"></span>';
+        tpl += '<a href="/Perfil/' + id + '" class="name">' + name + '</a>&nbsp;';
+        tpl += '<span class="datetime">' + time + '</span>';
+        tpl += '<span class="body">';
+        tpl += message;
+        tpl += '</span>';
+        tpl += '</div>';
+        tpl += '</div>';
+
+        return tpl;
+    };
+
+    function buscarMensagens(idUsuarioDestino, pagina, callback) {
+        var chatContainer = wrapperChat.find("[data-user-id=" + idUsuarioDestino + "] .page-quick-sidebar-chat-user-messages");
+
+        $.get(url.BuscarMensagens, {
+            idUsuarioEnvio: usuarioLogado.Id,
+            idUsuarioDestino: idUsuarioDestino,
+            pagina: pagina
+        })
+        .success((data) => {
+            if (!data || !data.Conversas.length) return;
+
+            data.Conversas.forEach((conversa) => {
+                chatContainer.append(preparePost(conversa.UsuarioEnvio.Id == usuarioLogado.Id ? 'out' : 'in',
+                    conversa.HoraEnvio,
+                    conversa.UsuarioEnvio.Nome,
+                    'avatar3',
+                    conversa.Conteudo,
+                    conversa.UsuarioEnvio.Id));
+            });
+            initChatSlimScroll();
+        })
+        .error((xhr) => {
+            notify.error("Erro ao carregar conversas");
+        })
+        .complete(() => {
+            if (typeof callback == "function")
+                callback();
+        });
+    }
+
+    function hideChat(obj) {
+        wrapperChat.removeClass("page-quick-sidebar-content-item-shown");
+        $(".page-quick-sidebar-chat-user[data-user-id=" + $(obj).closest(".page-quick-sidebar-chat-user").attr("data-user-id") + "]").hide();
+        $(".page-quick-sidebar-chat-user-form[data-user-id=" + $(obj).closest(".page-quick-sidebar-chat-user").attr("data-user-id") + "]").hide();
+    };
+
+    // Declarando um proxy de referencia ao Hub
+    var chatHub = $.connection.chat;
+
+    function openChat(obj) {
+        var idUsuarioDestino = $(obj).attr("data-user-id");
+        var data = $("[data-user-id=" + idUsuarioDestino + "]").show();
+        if (!+data.attr("data-pagina"))
+            buscarMensagens(idUsuarioDestino, 1, () => {
+                data.attr("data-pagina", 1);
+            });
+        initChatSlimScroll();
+        setaNumeroConversas();
+        wrapperChat.addClass("page-quick-sidebar-content-item-shown");
+
+        chatHub.server.marcarComoVisualizada(usuarioLogado.Id, idUsuarioDestino);
+        $(".media[data-user-id=" + idUsuarioDestino + "] .media-status span").text("").removeClass("badge-success");
+    };
+
+    // Criando a função que será chamada pelo Hub para distribuir as mensagens aos clientes.
+    // Por convenção as chamadas aos métodos são feitas em "camelCase"
+    chatHub.client.transmitirMensagem = function (usuario, usuarioDestino, mensagem) {
+        var isUsuarioLogado = usuarioLogado.Id == usuario.Id;
+
+        // Area do chat
+        var chatContainer = wrapperChat.find("[data-user-id=" + usuarioDestino + "] .page-quick-sidebar-chat-user-messages");
+        var input = wrapperChat.find('.page-quick-sidebar-chat-user-form:visible .form-control');
+
+        // Preparando postagem
+        var time = new Date();
+        var message = preparePost(isUsuarioLogado ? 'out' : 'in', (time.getHours() + ':' + time.getMinutes()), usuario.Nome, 'ds', mensagem, usuario.Id);
+        chatContainer.append(message);
+
+        var getLastPostPos = function () {
+            var height = 0;
+            chatContainer.find(".post")
+                .each(function () {
+                    height = height + $(this).outerHeight();
+                });
+
+            return height;
+        };
+
+        chatContainer.slimScroll({
+            scrollTo: getLastPostPos()
+        });
+
+        if (isUsuarioLogado)
+            input.val("");
+    };
+
+    chatHub.client.atualizaNovoUsuarioOnline = function (usuario) {
+        if (usuario.Id != usuarioLogado.Id && !$("[data-user-id=" + usuario.Id + "]").length)
+            $(".page-quick-sidebar-chat-users > ul.media-list.list-items").append(montaChatUsuario(usuario));
+
+        setaNumeroConversas();
+    }
+
+    chatHub.client.montaListaLogados = function (usuarios) {
+        usuarios.forEach((usuario) => {
+            chatHub.client.atualizaNovoUsuarioOnline(usuario);
+        });
+
+        setaNumeroConversas();
+    }
+
+    chatHub.client.removerUsuarioChat = function (usuario) {
+        if (wrapperChat
+            .find("[data-user-id=" + usuario.Id + "] .page-quick-sidebar-chat-user-messages")
+            .length) return;
+
+        $("[data-user-id=" + usuario.Id + "]").remove();
+        setaNumeroConversas();
+    }
+
+    // Iniciando a conexão com o Hub
+    $.connection.hub.start(() => {
+
+        chatHub.server.conectar(usuarioLogado);
+
+        $(document).on("click", '.page-quick-sidebar-chat-user-form .btn', () => {
+            chatHub.server.enviarMensagem(
+                usuarioLogado,
+                $(".page-quick-sidebar-chat-user:visible").attr("data-user-id"),
+                $('.page-quick-sidebar-chat-user-form:visible .form-control').val());
+        });
+
+        $(document).on("keypress", '.page-quick-sidebar-chat-user-form .form-control', (e) => {
+            if (e.which == 13) {
+                chatHub.server.enviarMensagem(usuarioLogado,
+                $(".page-quick-sidebar-chat-user:visible").attr("data-user-id"),
+                $('.page-quick-sidebar-chat-user-form:visible .form-control').val());
+                return false;
+            }
+        });
+    });
+
+</script>

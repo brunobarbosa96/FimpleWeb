@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Home.Models.Entity.Evento>
+@{ Layout = null;}
+
+@if (Model != null && Model.Any())
+{
+    foreach (var evento in Model)
+    {
+        <div class="timeline-badge">
+            <a href="@($"Perfil/{evento.Usuario.Id}")">
+                <img class="timeline-badge-userpic" data-toggle="tooltip" src="~/assets/img/placeholder.jpg" title="@evento.Usuario.NomeCompleto">
+            </a>
+        </div>
+        <div class="timeline-body">
+            <div class="timeline-body-arrow">
+            </div>
+            <div class="timeline-body-head">
+                <div class="timeline-body-head-caption">
+                    <span class="timeline-body-title font-blue-madison">@evento.Titulo &nbsp; </span> 
+                    <i class="timeline-body-title font-grey-cascade fa fa-map-marker"> &nbsp;Onde: @evento.Local &nbsp;</i>
+                    <i class="timeline-body-title font-grey-cascade fa fa-calendar"> &nbsp;Quando: @evento.Data.ToLongDateString() as @evento.Data.ToShortTimeString()</i>
+                    @if (evento.Usuario.Id != ViewBag.UsuarioLogado.Id)
+                    {
+                        <a href="javascript:;" onclick="abrirChat('@evento.Usuario.Id')" class="btn btn-xs black">
+                            <span class="md-click-circle md-click-animate" style="height: 65px; width: 65px; top: -22.5px; left: 2.07813px;"></span>
+                            <i class="fa fa-comments-o"></i>
+                        </a>
+                    }
+                </div>
+                <div class="timeline-body-head-actions">
+                    @if (evento.Usuario.Id == ViewBag.UsuarioLogado.Id)
+                    {
+                        <div class="btn-group">
+                            <button class="btn btn-circle green-haze btn-sm dropdown-toggle" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                Ações <i class="fa fa-angle-down"></i>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                                <li><a href="javascript:;" onclick="editarPost('@evento.Id', this)">Editar </a></li>
+
+                                <li class="divider">
+                                </li>
+                                <li><a href="@Url.Action("Index", "Timeline")" onclick="excluirPublicacao('@evento.Id')">Excluir </a></li>
+                            </ul>
+                        </div>
+                    }
+                    <div class="btn-group btn-salvar" style="display: none">
+                        <button class="btn btn-circle green-haze btn-sm" onclick="salvarEdicao('@evento.Id', this)" type="button" data-toggle="dropdown" data-close-others="true">
+                            Salvar <i class="fa fa-floppy-o "></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-body-content">
+                <div class="divPost" data-post="@evento.Id">
+                    @evento.Conteudo
+                </div>
+            </div>
+            <br>
+            <hr>
+            @Html.Partial("_Comentarios", evento)
+        </div>
+    }
+    <script> if ($("[data-nocontent]").length) $("[data-nocontent]").remove();</script>
+}
+else
+{
+    <div class="timeline-body" data-nocontent>
+        <div class="timeline-body-content">
+            <div class="divPost">
+                Nenhum evento encontrado até o momento. Aproveite e faça você o primeiro :)
+            </div>
+        </div>
+        <br>
+        <hr>
+    </div>
+}
+<script>
+    $('[data-toggle="tooltip"]').tooltip();
+</script>

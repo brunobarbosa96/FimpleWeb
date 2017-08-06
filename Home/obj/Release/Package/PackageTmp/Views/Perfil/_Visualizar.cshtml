@@ -1,0 +1,27 @@
+﻿@{ Layout = null;}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title tabbable-line">
+                <div class="caption caption-md">
+                    <i class="icon-globe theme-font hide"></i>
+                    <span class="caption-subject font-blue-madison bold uppercase">Configurações da conta</span>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#abaInfo" class="abas" data-toggle="tab">Informações Pessoais</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="portlet-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="abaInfo" style="display: none"></div>
+                </div>
+            </div>
+            <div id="divDados">
+                @Html.Action("GetInfo", "Perfil", new { idUsuario = Model.Id })
+            </div>
+        </div>
+    </div>
+</div>

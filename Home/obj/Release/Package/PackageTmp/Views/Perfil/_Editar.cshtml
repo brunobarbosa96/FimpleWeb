@@ -1,0 +1,66 @@
+﻿@{ Layout = null;}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light">
+            <div class="portlet-title tabbable-line">
+                <div class="caption caption-md">
+                    <i class="icon-globe theme-font hide"></i>
+                    <span class="caption-subject font-blue-madison bold uppercase">Configurações da conta</span>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#abaInfo" class="abas" onclick="openDirectory(this)" data-toggle="tab">Informações Pessoais</a>
+                    </li>
+                    <li>
+                        <a href="#abaMudarAvatar" onclick="openDirectory(this)" class="abas" data-toggle="tab">Mudar Avatar</a>
+                    </li>
+                    <li>
+                        <a href="#abaMudarSenha" onclick="openDirectory(this)" class="abas" data-toggle="tab">Mudar Senha</a>
+                    </li>
+                    <li>
+                        <a href="#abaUsuarioBloqueado" onclick="openDirectory(this)" class="abas" data-toggle="tab">Usuarios bloqueados</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="portlet-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="abaInfo" data-id="@Url.Action("GetInfo", "Perfil")" style="display: none"></div>
+                    <div class="tab-pane" id="abaMudarAvatar" data-id="@Url.Action("GetMudarAvatar", "Perfil")" style="display: none"></div>
+                    <div class="tab-pane" id="abaMudarSenha" data-id="@Url.Action("GetMudarSenha", "Perfil")" style="display: none"></div>
+                    <div class="tab-pane" id="abaUsuarioBloqueado" data-id="@Url.Action("GetUsuarioBloqueado", "Perfil")" style="display: none"></div>
+                </div>
+            </div>
+            <div id="divDados">
+                @Html.Action("GetInfo", "Perfil")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $("#abaInfo").html($("#divDados").html());
+
+    function openDirectory(element) {
+        var id = $(element).attr("href");
+        var idAntigo = $("li.active .abas").attr("href");
+        var action = $(".portlet-body").find(id).attr("data-id");
+
+        if (id == idAntigo)
+            return;
+
+        if ($(id).html().length)
+            return $("#divDados").html($(id).html());
+
+        $.get(action)
+            .done(function (data) {
+                $(idAntigo).html($("#divDados").html());
+                $("#divDados").html(data);
+            })
+            .fail(function (xhr) {
+                notify.error("Erro ao buscar Usuario");
+            });
+    }
+
+</script>

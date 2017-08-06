@@ -1,0 +1,44 @@
+﻿@model Home.Models.Entity.Usuario
+@{ Layout = null;}
+
+<form action="#">
+    <div class="form-group">
+        <label class="control-label">Senha Atual</label>
+        <input type="password" class="form-control" data-senha-antiga />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Nova Senha</label>
+        <input type="password" class="form-control" data-nova-senha />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Digite novamente a Nova Senha</label>
+        <input type="password" class="form-control" data-outra-senha />
+    </div>
+    <div class="margin-top-10">
+        <a href="javascript:;" onclick="editarSenha()" class="btn green-haze">Mudar Senha</a>
+        <a href="@Url.Action("Index", "Timeline")" class="btn default">Cancelar</a>
+    </div>
+</form>
+
+<script>
+
+    function editarSenha() {
+        if ($("[data-nova-senha]:visible").val() != $("[data-outra-senha]:visible").val())
+            return notify.error("As senhas não conferem");
+
+        var model = {
+            Id: @Model.Id,
+            Senha: $("[data-outra-senha]:visible").val(),
+            SenhaAntiga: $("[data-senha-antiga]:visible").val()
+        }
+
+        $.post("@Url.Action("PutSenha", "Usuario")", model)
+                    .done(function() {
+                        notify.success("Alterações realizadas com sucesso!");
+                    })
+        .fail(function(xhr) {
+            notify.error(xhr.responseText);
+        });
+    }
+
+</script>

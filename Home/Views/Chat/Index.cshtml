@@ -184,6 +184,20 @@
                     conversa.UsuarioEnvio.Id));
             });
             initChatSlimScroll();
+            var getLastPostPos = function () {
+                var height = 0;
+                chatContainer.find(".post")
+                    .each(function () {
+                        height = height + $(this).outerHeight();
+                    });
+
+                return height;
+            };
+
+            chatContainer.slimScroll({
+                scrollTo: getLastPostPos()
+            });
+
         })
         .error((xhr) => {
             notify.error("Erro ao carregar conversas");

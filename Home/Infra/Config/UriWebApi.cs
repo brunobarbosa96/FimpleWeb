@@ -4,7 +4,7 @@ namespace Home.Infra.Config
 {
     public static class UriWebApi
     {
-        private static string Server => Debugger.IsAttached ? "http://localhost:1337/" : "http://fimpleapi.azurewebsites.net/";
+        private static string Server => Debugger.IsAttached ? "http://localhost:8000/" : "http://fimpleapi.azurewebsites.net/";
         public static string Login => $"{Server}api/authentication/Login/";
         public static string Usuario => $"{Server}api/usuario/";
         public static string Curso => $"{Server}api/curso/";

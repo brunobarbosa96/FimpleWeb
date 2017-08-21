@@ -222,6 +222,7 @@
     // Por convenção as chamadas aos métodos são feitas em "camelCase"
     chatHub.client.transmitirMensagem = function (usuario, usuarioDestino, mensagem) {
         var isUsuarioLogado = usuarioLogado.Id == usuario.Id;
+        usuarioDestino = isUsuarioLogado ? usuarioDestino : usuario.Id;
 
         // Area do chat
         var chatContainer = wrapperChat.find("[data-user-id=" + usuarioDestino + "] .page-quick-sidebar-chat-user-messages");

@@ -141,7 +141,7 @@
     function salvarComentario(obj) {
         $.post('@Url.Action("PostComentario", "Evento")',
             {
-                Publicacao: { Id: $(obj).closest("[data-id-publicacao]").attr("data-id-publicacao") },
+                Evento: { Id: $(obj).closest("[data-id-evento]").attr("data-id-evento") },
                 Conteudo: $(obj).closest(".col-md-12.blog-page").find(".note-editable p").text(),
                 Usuario: { Id: '@Model.Id' }
             })

@@ -253,6 +253,9 @@
     <Content Include="assets\css\timeline.css" />
     <Content Include="assets\css\uniform.css" />
     <Content Include="assets\icon\favicon.ico" />
+    <Content Include="assets\img\loading.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\img\placeholder-old.jpg" />
     <Content Include="assets\img\placeholder.jpg" />
     <Content Include="assets\img\remove-icon-small.png" />
@@ -344,6 +347,7 @@
     <Content Include="Views\Login\_Dados.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\Fimple - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Fimple Web.pubxml" />
     <Content Include="Views\Usuario\_Cadastro.cshtml" />
     <Content Include="Views\Evento\Index.cshtml" />

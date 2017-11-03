@@ -134,3 +134,4 @@ B:\Fimple_Producao\FimpleWeb\Home\bin\Antlr3.Runtime.pdb
 B:\Fimple_Producao\FimpleWeb\Home\obj\Debug\Home.csprojResolveAssemblyReference.cache
 B:\Fimple_Producao\FimpleWeb\Home\obj\Debug\Home.dll
 B:\Fimple_Producao\FimpleWeb\Home\obj\Debug\Home.pdb
+B:\Fimple_Producao\FimpleWeb\Home\bin\assets\img\loading.gif

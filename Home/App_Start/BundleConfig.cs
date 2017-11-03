@@ -24,7 +24,8 @@ namespace Home
                     "~/assets/js/jquery.sparkline.min.js",
                     "~/assets/js/jquery.validate.min.js",
                     "~/assets/js/jquery.validate.unobtrusive.min.js",
-                    "~/assets/js/jquery.toast.js"
+                    "~/assets/js/jquery.toast.js",
+                    "~/assets/js/jquery.mask.min.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/assets/js").Include(

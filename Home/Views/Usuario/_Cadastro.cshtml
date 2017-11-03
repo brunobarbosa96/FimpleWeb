@@ -14,29 +14,29 @@
     </p>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Nome</label>
-        <input id="Nome" name="Nome" class="form-control placeholder-no-fix" type="text" placeholder="Nome" />
+        <input id="Nome" name="Nome" class="form-control placeholder-no-fix" type="text" placeholder="Nome" required />
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Sobrenome</label>
-        <input id="Sobrenome" name="Sobrenome" class="form-control placeholder-no-fix" type="text" placeholder="Sobrenome" />
+        <input id="Sobrenome" name="Sobrenome" class="form-control placeholder-no-fix" type="text" placeholder="Sobrenome" required />
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Data de nascimento</label>
-        <input id="DataNascimento" name="DataNascimento" class="form-control placeholder-no-fix date-picker" type="text" placeholder="Data de nascimento" />
+        <input id="DataNascimento" name="DataNascimento" class="form-control placeholder-no-fix date-picker" type="text" placeholder="Data de nascimento" required />
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Email</label>
-        <input id="Email" name="Email" class="form-control placeholder-no-fix" type="text" placeholder="Email" />
+        <input id="Email" name="Email" class="form-control placeholder-no-fix" type="email" placeholder="Email" required />
     </div>
     <p class="hint">
         Insira informações sobre o seu curso abaixo:
     </p>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Rgm</label>
-        <input id="Rgm" name="Rgm" class="form-control placeholder-no-fix" type="text" placeholder="Rgm" />
+        <input id="Rgm" name="Rgm" class="form-control placeholder-no-fix" type="text" placeholder="Rgm" maxlength="8" required />
     </div>
     <div class="form-group">
-        <select class="form-control" name="Curso.Id">
+        <select class="form-control" name="Curso.Id" required>
             <option>Curso</option>
             @if (Model?.ComboCurso != null && Model.ComboCurso.Any())
             {
@@ -50,7 +50,7 @@
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Data de inicio do curso</label>
-        <input id="DataInicioCurso" name="DataInicioCurso" class="form-control placeholder-no-fix" type="text" placeholder="Data de inicio do curso" />
+        <input id="DataInicioCurso" name="DataInicioCurso" class="form-control placeholder-no-fix" type="text" placeholder="Data de inicio do curso" required/>
     </div>
     <p class="hint">
         Insira os detalhes da conta abaixo:
@@ -61,11 +61,11 @@
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Senha</label>
-        <input id="Senha" name="Senha" class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Senha" />
+        <input id="Senha" name="Senha" class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Senha" required/>
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Insira novamente a senha</label>
-        <input id="NovaSenha" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Insira novamente a senha" />
+        <input id="NovaSenha" class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Insira novamente a senha" required/>
     </div>
     <div class="form-actions">
         <button type="button" id="btnVoltar" class="btn btn-default">Voltar</button>
@@ -75,39 +75,41 @@
 
 <script>
 
-            $(document).ready(function () {
-                Metronic.init(); // init metronic core components
-                Layout.init(); // init current layout
+    $(document).ready(function () {
+        Metronic.init(); // init metronic core components
+        Layout.init(); // init current layout
 
-                paceOptions = {
-                    elements: false,
-                    restartOnPushState: false,
-                    restartOnRequestAfter: false
-                }
+        paceOptions = {
+            elements: false,
+            restartOnPushState: false,
+            restartOnRequestAfter: false
+        }
 
-                $(".date-picker")
-                       .datepicker({
-                           format: 'dd/mm/yyyy',
-                           language: 'pt-BR',
-                           autoclose: true
-                       });
-                $("#DataInicioCurso")
-                    .datepicker({
-                        format: 'mm/yyyy',
-                        language: 'pt-BR',
-                        viewMode: 'years',
-                        minViewMode: "months",
-                        autoclose: true
-                    });
+        $(".date-picker")
+            .datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR',
+                autoclose: true
             });
+        $("#DataInicioCurso")
+            .datepicker({
+                format: 'mm/yyyy',
+                language: 'pt-BR',
+                viewMode: 'years',
+                minViewMode: "months",
+                autoclose: true
+            });
+    });
 
-</script>
-
-<script>
-
+    $("#DataNascimento").mask("00/00/0000");
+    $("#DataInicioCurso").mask("00/0000");
+    $("#Rgm").mask("00000000");
+    
     $("#btnCadastrar").click(function () {
-        if ($("#Senha").val() != $("#NovaSenha").val())
+        if ($("#Senha").val() != $("#NovaSenha").val()) {
+            notify.error("As senhas não conferem");
             return false;
+        }
     });
 
     $("#btnVoltar").click(getLogin);

@@ -288,6 +288,7 @@
     <Content Include="assets\js\jquery-ui.min.js" />
     <Content Include="assets\js\jquery.blockUI.min.js" />
     <Content Include="assets\js\jquery.cookie.min.js" />
+    <Content Include="assets\js\jquery.mask.min.js" />
     <Content Include="assets\js\jquery.min.js" />
     <Content Include="assets\js\jquery.signalR-2.1.2.js" />
     <Content Include="assets\js\jquery.signalR-2.1.2.min.js" />
